@@ -8,3 +8,4 @@ dist-ssr
 # Export original de Claude Design (solo referencia)
 design-export
 *.zip
+.env
