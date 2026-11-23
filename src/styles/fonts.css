@@ -1,0 +1,31 @@
+/*
+ * Tipografías autoalojadas (Fontsource): sin peticiones a terceros ni CSS
+ * bloqueante. Solo se descargan los subconjuntos usados (unicode-range).
+ */
+@import '@fontsource-variable/playfair-display/wght.css';
+@import '@fontsource-variable/playfair-display/wght-italic.css';
+@import '@fontsource/archivo/400.css';
+@import '@fontsource/archivo/500.css';
+@import '@fontsource/archivo/600.css';
+
+/*
+ * Fallbacks con métricas ajustadas (calculadas con @capsizecss/metrics) para que
+ * el cambio de la fuente del sistema a la web no desplace el layout (CLS ≈ 0).
+ */
+@font-face {
+  font-family: 'Playfair Display Fallback';
+  src: local('Georgia'), local('Times New Roman');
+  size-adjust: 101.39%;
+  ascent-override: 106.72%;
+  descent-override: 24.76%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Archivo Fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica');
+  size-adjust: 98.7%;
+  ascent-override: 88.96%;
+  descent-override: 21.28%;
+  line-gap-override: 0%;
+}

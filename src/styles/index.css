@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Anillo de foco: tinta sobre fondos claros; las secciones oscuras lo invierten. */
+    --focus-ring: theme('colors.ink.DEFAULT');
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* El diseño usa el interlineado por defecto del navegador, no el 1.5 del preflight. */
+    line-height: normal;
+  }
+
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+  }
+
+  a {
+    @apply text-ink no-underline;
+  }
+
+  /* <picture> usa display: contents; sin esto los <source> ocuparían celdas en grids. */
+  picture > source {
+    display: none;
+  }
+
+  ::selection {
+    @apply bg-accent text-paper-light;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  /*
+   * Aparición al entrar en viewport (useInViewReveal).
+   * Solo se oculta con JS activo (clase .js en <html>) para que el HTML
+   * prerenderizado sea visible sin JavaScript y para los crawlers.
+   */
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+      opacity 800ms theme('transitionTimingFunction.snap'),
+      transform 800ms theme('transitionTimingFunction.snap');
+  }
+
+  .js .reveal[data-revealed] {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /*
+   * Marco del hero (proporción 1:1.175). Por defecto se dimensiona por alto, como
+   * en el diseño; con container queries además nunca desborda el ancho de su celda.
+   */
+  .frame-stage {
+    container-type: size;
+  }
+
+  .frame-box {
+    aspect-ratio: 1 / 1.175;
+    height: 100%;
+    max-height: 100%;
+  }
+
+  @supports (width: 1cqw) {
+    .frame-box {
+      height: auto;
+      width: min(100cqw, 100cqh / 1.175);
+    }
+  }
+
+  /* Hueco interior del marco tallado: coincide con el border-image de .frame-border */
+  .frame-canvas {
+    inset: clamp(21px, 5.8vw, 67px) clamp(27px, 7.2vw, 84px) clamp(19px, 5.4vw, 62px)
+      clamp(27px, 7.3vw, 85px);
+  }
+
+  .frame-border {
+    border-style: solid;
+    border-color: transparent;
+    border-width: clamp(25px, 6.8vw, 79px) clamp(32px, 8.5vw, 99px) clamp(23px, 6.3vw, 73px)
+      clamp(32px, 8.6vw, 100px);
+    border-image: var(--frame-image) 77 97 72 98 stretch;
+  }
+}
